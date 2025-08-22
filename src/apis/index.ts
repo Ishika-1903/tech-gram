@@ -3,7 +3,7 @@ import axios from 'axios';
 import _ from 'lodash';
 
 const ApiClient = axios.create({
-  baseURL: 'https://brodsalt-portal-production.up.railway.app', // TODO: Replace with env.API_URL later
+  baseURL: 'http://10.239.207.17:3500', // TODO: Replace with env.API_URL later
   // baseURL: 'https://brodsalt-portal-production.up.railway.app',
   headers: {
     'Content-Type': 'application/json',

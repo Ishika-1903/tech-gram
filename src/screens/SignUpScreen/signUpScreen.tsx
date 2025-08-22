@@ -5,6 +5,11 @@ import strings from '../../constants/strings';
 import InputBox from '../../components/inputBox';
 import colors from '../../constants/colors';
 import Button from '../../components/button';
+import { useNavigation } from '@react-navigation/native';
+import { signup } from '../../apis/signup/signup';
+import { SignupRequest, SignupResponse } from '../../apis/signup/types';
+import { AuthStackParamList } from '../../navigation/navigator';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const SignupScreen: React.FC = () => {
   const [name, setName] = useState('');
@@ -12,11 +17,22 @@ const SignupScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSignup = () => {
-    console.log('Signup clicked', { name, email, password, confirmPassword });
-    // TODO: API call ya navigation
-  };
+const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
 
+  const handleSignup = async () => {
+    console.log('hey');
+     const requestData: SignupRequest = { name, email, password, confirmPassword };
+    try {
+    const response: SignupResponse = await signup(requestData);
+
+      console.log('Signup success:', response.message);
+      navigation.replace('Home');
+    } catch (err: any) {
+      // Show friendly error
+      console.error('Signup error:', err.message);
+    
+    }
+  };
   return (
     <View style={styles.container}>
       {/* App Name */}
@@ -61,7 +77,7 @@ const SignupScreen: React.FC = () => {
       {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>{strings.ALREADY_HAVE_AN_ACCOUNT}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.footerLink}> {strings.LOGIN}</Text>
         </TouchableOpacity>
       </View>

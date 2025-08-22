@@ -1,24 +1,12 @@
 import ApiClient from "..";
-import axios from "axios";
+import { LoginRequest, LoginResponse } from "./types";
 
-export const fetchCampaign = async () => {
+export const login = async (data: LoginRequest): Promise<LoginResponse> => {
   try {
-    const response = await ApiClient.get('/api/campaign/latest');
+    const response = await ApiClient.post<LoginResponse>('/api/auth/login', data);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching campaign image:', error);
-    throw error;
+  } catch (error: any) {
+    const errorMessage = error?.data?.message || 'Something went wrong';
+    throw new Error(errorMessage);
   }
-};
-
-export const fetchDeals = async () => {
-  try {
-    const response = await axios.get(
-      'https://889dc93edbe2.ngrok-free.app/api/loyalty/deals',
-    );
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching campaign dealss:', error);
-    throw error;
-  }
-};
+}

@@ -4,14 +4,26 @@ import InputBox from '../../components/inputBox';
 import strings from '../../constants/strings';
 import colors from '../../constants/colors';
 import Button from '../../components/button';
+import { useNavigation } from '@react-navigation/native';
+import { login } from '../../apis/login/login';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthStackParamList } from '../../navigation/navigator';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
+
   const handleLogin = () => {
-    console.log('Login clicked', { email, password });
-    // TODO: API call ya navigation
+    try {
+      const loginRequest = login({ email, password });
+      console.log('loginRequest', loginRequest);
+      navigation.replace('Home'); // Navigate to Home on successful login
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
   return (
@@ -47,7 +59,7 @@ const LoginScreen: React.FC = () => {
       {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>{strings.DONT_HAVE_AN_ACCOUNT}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
           <Text style={styles.footerLink}> {strings.SIGNUP}</Text>
         </TouchableOpacity>
       </View>

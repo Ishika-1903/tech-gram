@@ -1,18 +1,17 @@
-
-import { StyleSheet, Text, View } from 'react-native';
-import AppNavigator from './src/navigation/AppNavigtor';
+import { StyleSheet } from 'react-native';
+import AppNavigator from './src/navigation/AppNavigator';
+import { useEffect } from 'react';
 
 export default function App() {
-  return (
-      <AppNavigator />
-  );
+  useEffect(() => {
+    console.log('🔍 Root App mounted');
+  },[]);
+  return <AppNavigator />;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
